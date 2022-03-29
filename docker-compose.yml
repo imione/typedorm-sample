@@ -1,0 +1,23 @@
+version: '2.2'
+
+services:
+  aws:
+    image: localstack/localstack:0.12.17
+    container_name: typedorm-sample-localstack
+    ports:
+      - '4566:4566'
+    environment:
+      - HOSTNAME_EXTERNAL=localstack
+      - HOSTNAME=localstack
+      - SERVICES=kms,dynamodb
+      - DEFAULT_REGION=ap-northeast-2
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_ACCESS_KEY_ID=mock
+      - AWS_SECRET_ACCESS_KEY=mock
+      - AWS_DEFAULT_REGION=ap-northeast-2
+      - KMS_PROVIDER=local-kms
+      - DYNAMODB_CORS=*
+    volumes:
+      - '${TMPDIR:-/tmp/localstack}:/tmp/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - './.localstack/init.sh:/docker-entrypoint-initaws.d/init-localstack.sh'
